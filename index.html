@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magento 2 Admin Tools Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="logo.png" alt="Admin Tools Logo">
+                <h1>Admin Tools</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#installation">Installation</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#usage">Usage</a></li>
+                    <li><a href="#configuration">Configuration</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Magento 2 Admin Tools</h1>
+                <p>Simplify your Magento 2 administration with powerful tools for reindexing, deployment, and system commands.</p>
+                <div class="hero-buttons">
+                    <a href="#installation" class="btn btn-primary">Get Started</a>
+                    <a href="#features" class="btn btn-secondary">View Features</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="hero-image.png" alt="Admin Tools Dashboard">
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content">
+        <div class="container">
+            <section id="overview" class="section">
+                <h2>Overview</h2>
+                <div class="section-content">
+                    <p>The Magento 2 Admin Tools extension provides a user-friendly interface for performing common administrative tasks directly from your Magento admin panel. This extension eliminates the need to access the server via SSH or command line for routine operations.</p>
+                    <div class="feature-highlights">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h3>Easy Reindexing</h3>
+                            <p>Reindex individual or all indexers with a single click from the admin panel.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-terminal"></i>
+                            </div>
+                            <h3>System Commands</h3>
+                            <p>Run setup:upgrade, setup:di:compile, and static content deployment without command line access.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <h3>Mode Switching</h3>
+                            <p>Easily switch between developer and production modes with a single click.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="installation" class="section">
+                <h2>Installation</h2>
+                <div class="section-content">
+                    <div class="installation-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Create Directory Structure</h3>
+                                <p>Create the following directory structure in your Magento installation:</p>
+                                <div class="code-block">
+                                    <pre><code>app/code/Storeteam/AdminTools/</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Copy Files</h3>
+                                <p>Copy all extension files into the directory structure, maintaining the file hierarchy.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Run Installation Commands</h3>
+                                <p>Execute the following commands from your Magento root directory:</p>
+                                <div class="code-block">
+                                    <pre><code>php bin/magento module:enable Storeteam_AdminTools
+php bin/magento setup:upgrade
+php bin/magento setup:di:compile
+php bin/magento setup:static-content:deploy -f
+php bin/magento cache:flush</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h3>Verify Installation</h3>
+                                <p>Log in to your Magento admin panel and navigate to <strong>System > Admin Tools</strong> to verify the installation was successful.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="features" class="section">
+                <h2>Features</h2>
+                <div class="section-content">
+                    <div class="tabs">
+                        <div class="tab-headers">
+                            <button class="tab-header active" data-tab="indexing">Index Management</button>
+                            <button class="tab-header" data-tab="commands">System Commands</button>
+                            <button class="tab-header" data-tab="modes">Deployment Modes</button>
+                            <button class="tab-header" data-tab="security">Security</button>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="indexing">
+                                <div class="feature-details">
+                                    <div class="feature-image">
+                                        <img src="indexing.png" alt="Index Management Interface">
+                                    </div>
+                                    <div class="feature-description">
+                                        <h3>Index Management</h3>
+                                        <p>The Index Management feature provides a user-friendly interface to manage and reindex your Magento indexes directly from the admin panel.</p>
+                                        <ul class="feature-list">
+                                            <li><i class="fas fa-check"></i> View all available indexers in one place</li>
+                                            <li><i class="fas fa-check"></i> Reindex individual indexers with a single click</li>
+                                            <li><i class="fas fa-check"></i> Reindex all indexers at once</li>
+                                            <li><i class="fas fa-check"></i> View detailed output of reindexing operations</li>
+                                            <li><i class="fas fa-check"></i> Confirmation dialogs to prevent accidental reindexing</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="commands">
+                                <div class="feature-details">
+                                    <div class="feature-image">
+                                        <img src="commands.png" alt="System Commands Interface">
+                                    </div>
+                                    <div class="feature-description">
+                                        <h3>System Commands</h3>
+                                        <p>Execute common Magento commands directly from the admin panel without needing command line access.</p>
+                                        <ul class="feature-list">
+                                            <li><i class="fas fa-check"></i> Run setup:upgrade to update database schema</li>
+                                            <li><i class="fas fa-check"></i> Run setup:di:compile for code generation</li>
+                                            <li><i class="fas fa-check"></i> Deploy static content for specific locales</li>
+                                            <li><i class="fas fa-check"></i> View detailed command output</li>
+                                            <li><i class="fas fa-check"></i> Confirmation dialogs for potentially time-consuming operations</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="modes">
+                                <div class="feature-details">
+                                    <div class="feature-image">
+                                        <img src="modes.png" alt="Deployment Modes Interface">
+                                    </div>
+                                    <div class="feature-description">
+                                        <h3>Deployment Modes</h3>
+                                        <p>Easily switch between Magento's deployment modes directly from the admin panel.</p>
+                                        <ul class="feature-list">
+                                            <li><i class="fas fa-check"></i> View current deployment mode</li>
+                                            <li><i class="fas fa-check"></i> Switch to developer mode for development</li>
+                                            <li><i class="fas fa-check"></i> Switch to production mode for live sites</li>
+                                            <li><i class="fas fa-check"></i> Confirmation dialogs before mode switching</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="security">
+                                <div class="feature-details">
+                                    <div class="feature-image">
+                                        <img src="security.png" alt="Security Features">
+                                    </div>
+                                    <div class="feature-description">
+                                        <h3>Security Features</h3>
+                                        <p>The extension is built with security in mind, providing several features to ensure safe operation.</p>
+                                        <ul class="feature-list">
+                                            <li><i class="fas fa-check"></i> Role-based access control using Magento's ACL system</li>
+                                            <li><i class="fas fa-check"></i> Optional confirmation dialogs before executing commands</li>
+                                            <li><i class="fas fa-check"></i> Secure command execution using Magento's Shell class</li>
+                                            <li><i class="fas fa-check"></i> Module can be disabled completely via configuration</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="usage" class="section">
+                <h2>Usage</h2>
+                <div class="section-content">
+                    <div class="usage-guide">
+                        <div class="usage-item">
+                            <h3>Accessing Admin Tools</h3>
+                            <div class="usage-content">
+                                <div class="usage-image">
+                                    <img src="menu-navigation.png" alt="Admin Tools Menu Navigation">
+                                </div>
+                                <div class="usage-steps">
+                                    <p>After installation, you can access the Admin Tools from the main menu:</p>
+                                    <ol>
+                                        <li>Log in to your Magento admin panel</li>
+                                        <li>Navigate to <strong>System > Admin Tools</strong></li>
+                                        <li>Choose either <strong>Index Management</strong> or <strong>System Commands</strong></li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="usage-item">
+                            <h3>Using Index Management</h3>
+                            <div class="usage-content">
+                                <div class="usage-image">
+                                    <img src="index-management-usage.png" alt="Using Index Management">
+                                </div>
+                                <div class="usage-steps">
+                                    <p>To reindex your Magento store:</p>
+                                    <ol>
+                                        <li>Navigate to <strong>System > Admin Tools > Index Management</strong></li>
+                                        <li>To reindex all indexes at once, click the <strong>Reindex All</strong> button</li>
+                                        <li>To reindex a specific index, find it in the table and click the <strong>Reindex</strong> button in its row</li>
+                                        <li>Confirm the action if prompted</li>
+                                        <li>View the reindexing results in the result section that appears</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="usage-item">
+                            <h3>Using System Commands</h3>
+                            <div class="usage-content">
+                                <div class="usage-image">
+                                    <img src="system-commands-usage.png" alt="Using System Commands">
+                                </div>
+                                <div class="usage-steps">
+                                    <p>To run system commands:</p>
+                                    <ol>
+                                        <li>Navigate to <strong>System > Admin Tools > System Commands</strong></li>
+                                        <li>Choose the command you want to execute:</li>
+                                        <ul>
+                                            <li>Click <strong>Run setup:upgrade</strong> to update database schema</li>
+                                            <li>Click <strong>Run setup:di:compile</strong> to generate code</li>
+                                            <li>Enter a locale code and click <strong>Run setup:static-content:deploy</strong></li>
+                                            <li>Click either <strong>Developer Mode</strong> or <strong>Production Mode</strong> to switch modes</li>
+                                        </ul>
+                                        <li>Confirm the action if prompted</li>
+                                        <li>View the command output in the result section that appears</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="configuration" class="section">
+                <h2>Configuration</h2>
+                <div class="section-content">
+                    <div class="configuration-guide">
+                        <div class="configuration-image">
+                            <img src="configuration.png" alt="Admin Tools Configuration">
+                        </div>
+                        <div class="configuration-details">
+                            <p>You can configure the Admin Tools extension under <strong>Stores > Configuration > Store Team > Admin Tools</strong>.</p>
+                            
+                            <h3>General Settings</h3>
+                            <ul>
+                                <li><strong>Enable Module:</strong> Enable or disable the entire module</li>
+                                <li><strong>PHP Path:</strong> Specify a custom PHP binary path if your server requires it</li>
+                            </ul>
+                            
+                            <h3>Security Settings</h3>
+                            <ul>
+                                <li><strong>Confirm Command Execution:</strong> Enable or disable confirmation dialogs before executing commands</li>
+                            </ul>
+                            
+                            <h3>Access Control</h3>
+                            <p>To control which admin users can access the Admin Tools:</p>
+                            <ol>
+                                <li>Navigate to <strong>System > User Roles</strong></li>
+                                <li>Edit the role you want to modify</li>
+                                <li>In the Role Resources tree, find <strong>System > Admin Tools</strong></li>
+                                <li>Check or uncheck the permissions as needed</li>
+                                <li>Save the role</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="faq" class="section">
+                <h2>Frequently Asked Questions</h2>
+                <div class="section-content">
+                    <div class="accordion">
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <h3>Is it safe to run these commands from the admin panel?</h3>
+                                <span class="accordion-icon"></span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Yes, the extension uses Magento's built-in Shell class to execute commands securely. Additionally, access to these features is restricted by Magento's ACL system, so only authorized administrators can use them.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <h3>Will reindexing affect my store's performance?</h3>
+                                <span class="accordion-icon"></span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Reindexing can be resource-intensive, especially on large stores. It's recommended to run full reindexing operations during off-peak hours. The extension provides individual indexer reindexing, so you can choose to reindex only what's necessary.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <h3>What happens if a command fails?</h3>
+                                <span class="accordion-icon"></span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>If a command fails, the extension will display the error message and any output from the command. This information can help you diagnose and fix the issue. The extension handles errors gracefully and won't leave your store in an inconsistent state.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <h3>Can I use this extension on a production store?</h3>
+                                <span class="accordion-icon"></span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Yes, the extension is designed to be used on production stores. However, we recommend testing it in a development environment first to ensure it works correctly with your specific Magento setup.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <h3>Does this extension work with Magento Commerce (Enterprise Edition)?</h3>
+                                <span class="accordion-icon"></span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Yes, the extension is compatible with both Magento Open Source (Community Edition) and Magento Commerce (Enterprise Edition).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="logo.png" alt="Admin Tools Logo">
+                    <h3>Admin Tools</h3>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#installation">Installation</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#usage">Usage</a></li>
+                        <li><a href="#configuration">Configuration</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:support@storeteam.com">support@storeteam.com</a></p>
+                    <p><i class="fas fa-globe"></i> <a href="https://www.storeteam.com">www.storeteam.com</a></p>
+                    <div class="social-links">
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Store Team. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+<style>
+/* Base Styles */
+:root {
+  --primary-color: #ff5501;
+  --primary-dark: #e04b00;
+  --secondary-color: #514943;
+  --light-gray: #f5f5f5;
+  --medium-gray: #e8e8e8;
+  --dark-gray: #373330;
+  --text-color: #41362f;
+  --success-color: #79a22e;
+  --warning-color: #eb5202;
+  --info-color: #007bdb;
+  --border-radius: 4px;
+  --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Open Sans", Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: #fff;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--secondary-color);
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--dark-gray);
+  color: white;
+}
+
+/* Header */
+.header {
+  background-color: white;
+  box-shadow: var(--box-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.logo h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.main-nav ul {
+  display: flex;
+  list-style: none;
+}
+
+.main-nav li {
+  margin-left: 20px;
+}
+
+.main-nav a {
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+.main-nav a:hover {
+  color: var(--primary-color);
+}
+
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.mobile-menu-toggle span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px 0;
+  background-color: var(--secondary-color);
+  transition: var(--transition);
+}
+
+/* Hero Section */
+.hero {
+  background-color: var(--light-gray);
+  padding: 60px 0;
+}
+
+.hero .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero-content {
+  flex: 1;
+  padding-right: 40px;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: var(--secondary-color);
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.hero-image {
+  flex: 1;
+  text-align: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+/* Main Content */
+.main-content {
+  padding: 60px 0;
+}
+
+.section {
+  margin-bottom: 60px;
+}
+
+.section-content {
+  margin-top: 20px;
+}
+
+/* Feature Highlights */
+.feature-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.feature-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 30px;
+  box-shadow: var(--box-shadow);
+  text-align: center;
+  transition: var(--transition);
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.feature-card h3 {
+  margin-bottom: 15px;
+}
+
+/* Installation Steps */
+.installation-steps {
+  margin-top: 30px;
+}
+
+.step {
+  display: flex;
+  margin-bottom: 30px;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.code-block {
+  background-color: var(--dark-gray);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin: 15px 0;
+  overflow-x: auto;
+}
+
+.code-block pre {
+  margin: 0;
+}
+
+.code-block code {
+  color: white;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9rem;
+}
+
+/* Tabs */
+.tabs {
+  margin-top: 30px;
+}
+
+.tab-headers {
+  display: flex;
+  border-bottom: 2px solid var(--medium-gray);
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.tab-header {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-color);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: var(--transition);
+}
+
+.tab-header:hover {
+  color: var(--primary-color);
+}
+
+.tab-header.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+/* Feature Details */
+.feature-details {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.feature-image {
+  flex: 1;
+}
+
+.feature-image img {
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.feature-description {
+  flex: 1;
+}
+
+.feature-list {
+  list-style: none;
+  margin-top: 20px;
+}
+
+.feature-list li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.feature-list i {
+  color: var(--success-color);
+  margin-right: 10px;
+}
+
+/* Usage Guide */
+.usage-guide {
+  margin-top: 30px;
+}
+
+.usage-item {
+  margin-bottom: 40px;
+}
+
+.usage-content {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.usage-image {
+  flex: 1;
+}
+
+.usage-image img {
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.usage-steps {
+  flex: 1;
+}
+
+.usage-steps ol,
+.usage-steps ul {
+  margin-left: 20px;
+  margin-top: 15px;
+}
+
+.usage-steps li {
+  margin-bottom: 10px;
+}
+
+/* Configuration Guide */
+.configuration-guide {
+  display: flex;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.configuration-image {
+  flex: 1;
+}
+
+.configuration-image img {
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.configuration-details {
+  flex: 1;
+}
+
+.configuration-details h3 {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.configuration-details ul,
+.configuration-details ol {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.configuration-details li {
+  margin-bottom: 8px;
+}
+
+/* FAQ Accordion */
+.accordion {
+  margin-top: 30px;
+}
+
+.accordion-item {
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--border-radius);
+  margin-bottom: 15px;
+}
+
+.accordion-header {
+  padding: 15px 20px;
+  background-color: var(--light-gray);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.accordion-icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+
+.accordion-icon:before,
+.accordion-icon:after {
+  content: "";
+  position: absolute;
+  background-color: var(--secondary-color);
+  transition: var(--transition);
+}
+
+.accordion-icon:before {
+  width: 16px;
+  height: 2px;
+  top: 7px;
+}
+
+.accordion-icon:after {
+  width: 2px;
+  height: 16px;
+  left: 7px;
+  top: 0;
+}
+
+.accordion-item.active .accordion-icon:after {
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+.accordion-content {
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.accordion-item.active .accordion-content {
+  padding: 20px;
+  max-height: 500px;
+}
+
+/* Footer */
+.footer {
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 60px 0 30px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.footer-logo img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.footer-logo h3 {
+  color: white;
+  margin: 0;
+}
+
+.footer h4 {
+  color: white;
+  margin-bottom: 20px;
+}
+
+.footer-links ul {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a,
+.footer-contact a {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-links a:hover,
+.footer-contact a:hover {
+  color: white;
+}
+
+.footer-contact p {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.footer-contact i {
+  margin-right: 10px;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transition: var(--transition);
+}
+
+.social-links a:hover {
+  background-color: var(--primary-color);
+}
+
+.copyright {
+  text-align: center;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .hero .container {
+    flex-direction: column;
+  }
+
+  .hero-content {
+    padding-right: 0;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .feature-details {
+    flex-direction: column;
+  }
+
+  .feature-image {
+    margin-bottom: 30px;
+  }
+
+  .usage-content {
+    flex-direction: column;
+  }
+
+  .usage-image {
+    margin-bottom: 30px;
+  }
+
+  .configuration-guide {
+    flex-direction: column;
+  }
+
+  .configuration-image {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-nav {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .main-nav.active {
+    display: block;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background-color: white;
+    box-shadow: var(--box-shadow);
+  }
+
+  .main-nav.active ul {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .main-nav.active li {
+    margin: 0;
+    margin-bottom: 15px;
+  }
+
+  .tab-headers {
+    flex-wrap: wrap;
+  }
+
+  .tab-header {
+    flex: 1;
+    text-align: center;
+    min-width: 120px;
+  }
+}
+
+</style>
+</html>

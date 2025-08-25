@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Storeteam_AdminTools::admintools" title="Admin Tools" module="Storeteam_AdminTools" sortOrder="100" resource="Storeteam_AdminTools::admintools" parent="Magento_Backend::system"/>
+        <add id="Storeteam_AdminTools::index_management" title="Index Management" module="Storeteam_AdminTools" sortOrder="10" resource="Storeteam_AdminTools::index_management" parent="Storeteam_AdminTools::admintools" action="admintools/index/index"/>
+        <add id="Storeteam_AdminTools::system_commands" title="System Commands" module="Storeteam_AdminTools" sortOrder="20" resource="Storeteam_AdminTools::system_commands" parent="Storeteam_AdminTools::admintools" action="admintools/system/index"/>
+    </menu>
+</config>

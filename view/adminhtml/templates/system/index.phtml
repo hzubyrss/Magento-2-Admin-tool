@@ -1,0 +1,245 @@
+<?php
+/** @var \Storeteam\AdminTools\Block\Adminhtml\System $block */
+?>
+
+<div class="admintools-container">
+    <div class="admintools-header">
+        <h2><?= $block->escapeHtml(__('System Commands')) ?></h2>
+        <p><?= $block->escapeHtml(__('Execute common Magento commands directly from the admin panel.')) ?></p>
+    </div>
+
+    <?php if (!$block->isModuleEnabled()): ?>
+        <div class="message message-warning">
+            <?= $block->escapeHtml(__('Admin Tools module is currently disabled. Please enable it in System Configuration.')) ?>
+        </div>
+    <?php else: ?>
+        <div class="admintools-content">
+            <div class="admintools-card">
+                <h3><?= $block->escapeHtml(__('Setup Commands')) ?></h3>
+                <div class="admintools-card-content">
+                    <p><?= $block->escapeHtml(__('Run setup:upgrade to update database schema and data.')) ?></p>
+                    <button id="setup-upgrade" class="action-primary">
+                        <span><?= $block->escapeHtml(__('Run setup:upgrade')) ?></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="admintools-card">
+                <h3><?= $block->escapeHtml(__('Compilation')) ?></h3>
+                <div class="admintools-card-content">
+                    <p><?= $block->escapeHtml(__('Run setup:di:compile to generate code and dependency injection configuration.')) ?></p>
+                    <button id="setup-di-compile" class="action-primary">
+                        <span><?= $block->escapeHtml(__('Run setup:di:compile')) ?></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="admintools-card">
+                <h3><?= $block->escapeHtml(__('Static Content Deployment')) ?></h3>
+                <div class="admintools-card-content">
+                    <p><?= $block->escapeHtml(__('Deploy static view files for a specified locale.')) ?></p>
+                    <div class="field">
+                        <label for="static-content-locale"><?= $block->escapeHtml(__('Locale')) ?></label>
+                        <div class="control">
+                            <input id="static-content-locale" type="text" value="en_US" class="admin__control-text" />
+                        </div>
+                    </div>
+                    <button id="static-content-deploy" class="action-primary">
+                        <span><?= $block->escapeHtml(__('Run setup:static-content:deploy')) ?></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="admintools-card">
+                <h3><?= $block->escapeHtml(__('Deployment Mode')) ?></h3>
+                <div class="admintools-card-content">
+                    <p><?= $block->escapeHtml(__('Current mode: ')) ?><strong><?= $block->escapeHtml($block->getCurrentMode()) ?></strong></p>
+                    <div class="field">
+                        <label><?= $block->escapeHtml(__('Set Mode')) ?></label>
+                        <div class="control">
+                            <button id="set-mode-developer" class="action-secondary" data-mode="developer">
+                                <span><?= $block->escapeHtml(__('Developer Mode')) ?></span>
+                            </button>
+                            <button id="set-mode-production" class="action-primary" data-mode="production">
+                                <span><?= $block->escapeHtml(__('Production Mode')) ?></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="command-result" class="admintools-result" style="display: none;">
+            <h3><?= $block->escapeHtml(__('Command Result')) ?></h3>
+            <div class="message"></div>
+            <pre class="output"></pre>
+        </div>
+
+        <script>
+            require([
+                'jquery',
+                'Magento_Ui/js/modal/confirm'
+            ], function($, confirm) {
+                'use strict';
+
+                var shouldConfirm = <?= $block->shouldConfirmExecution() ? 'true' : 'false' ?>;
+
+                function executeCommand(command, params) {
+                    $.ajax({
+                        url: '<?= $block->getUrl('admintools/system/execute') ?>',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: $.extend({
+                            command: command,
+                            form_key: '<?= $block->getFormKey() ?>'
+                        }, params || {}),
+                        beforeSend: function() {
+                            $('body').trigger('processStart');
+                        },
+                        success: function(response) {
+                            $('body').trigger('processStop');
+                            showResult(response);
+                        },
+                        error: function() {
+                            $('body').trigger('processStop');
+                            showResult({
+                                success: false,
+                                message: '<?= $block->escapeJs(__('An error occurred while executing the command.')) ?>'
+                            });
+                        }
+                    });
+                }
+
+                function showResult(response) {
+                    var $result = $('#command-result');
+                    var $message = $result.find('.message');
+                    var $output = $result.find('.output');
+
+                    $message.removeClass('message-success message-error');
+                    $message.addClass(response.success ? 'message-success' : 'message-error');
+                    $message.text(response.message);
+
+                    if (response.output) {
+                        $output.text(response.output);
+                        $output.show();
+                    } else {
+                        $output.hide();
+                    }
+
+                    $result.show();
+                    $('html, body').animate({
+                        scrollTop: $result.offset().top - 50
+                    }, 500);
+                }
+
+                $('#setup-upgrade').on('click', function() {
+                    if (shouldConfirm) {
+                        confirm({
+                            title: '<?= $block->escapeJs(__('Run setup:upgrade')) ?>',
+                            content: '<?= $block->escapeJs(__('Are you sure you want to run setup:upgrade? This may take some time.')) ?>',
+                            actions: {
+                                confirm: function() {
+                                    executeCommand('setup:upgrade');
+                                }
+                            }
+                        });
+                    } else {
+                        executeCommand('setup:upgrade');
+                    }
+                });
+
+                $('#setup-di-compile').on('click', function() {
+                    if (shouldConfirm) {
+                        confirm({
+                            title: '<?= $block->escapeJs(__('Run setup:di:compile')) ?>',
+                            content: '<?= $block->escapeJs(__('Are you sure you want to run setup:di:compile? This may take some time.')) ?>',
+                            actions: {
+                                confirm: function() {
+                                    executeCommand('setup:di:compile');
+                                }
+                            }
+                        });
+                    } else {
+                        executeCommand('setup:di:compile');
+                    }
+                });
+
+                $('#static-content-deploy').on('click', function() {
+                    var locale = $('#static-content-locale').val();
+                    if (shouldConfirm) {
+                        confirm({
+                            title: '<?= $block->escapeJs(__('Run setup:static-content:deploy')) ?>',
+                            content: '<?= $block->escapeJs(__('Are you sure you want to run setup:static-content:deploy? This may take some time.')) ?>',
+                            actions: {
+                                confirm: function() {
+                                    executeCommand('setup:static-content:deploy', {locale: locale});
+                                }
+                            }
+                        });
+                    } else {
+                        executeCommand('setup:static-content:deploy', {locale: locale});
+                    }
+                });
+
+                $('#set-mode-developer, #set-mode-production').on('click', function() {
+                    var mode = $(this).data('mode');
+                    if (shouldConfirm) {
+                        confirm({
+                            title: '<?= $block->escapeJs(__('Set Mode')) ?>',
+                            content: '<?= $block->escapeJs(__('Are you sure you want to switch to %1 mode?')) ?>'.replace('%1', mode),
+                            actions: {
+                                confirm: function() {
+                                    executeCommand('deploy:mode:set', {mode: mode});
+                                }
+                            }
+                        });
+                    } else {
+                        executeCommand('deploy:mode:set', {mode: mode});
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
+</div>
+
+<style>
+    .admintools-container {
+        padding: 20px;
+    }
+    .admintools-header {
+        margin-bottom: 20px;
+    }
+    .admintools-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    .admintools-card {
+        border: 1px solid #e3e3e3;
+        border-radius: 3px;
+        background: #f8f8f8;
+    }
+    .admintools-card h3 {
+        padding: 10px 15px;
+        margin: 0;
+        background: #f1f1f1;
+        border-bottom: 1px solid #e3e3e3;
+    }
+    .admintools-card-content {
+        padding: 15px;
+    }
+    .admintools-result {
+        margin-top: 30px;
+        padding: 15px;
+        background: #f8f8f8;
+        border: 1px solid #e3e3e3;
+    }
+    .admintools-result pre.output {
+        max-height: 300px;
+        overflow: auto;
+        background: #f1f1f1;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+</style>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="storeteam" translate="label" sortOrder="300">
+            <label>Store Team</label>
+        </tab>
+        <section id="admintools" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>Admin Tools</label>
+            <tab>storeteam</tab>
+            <resource>Storeteam_AdminTools::admintools</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General Settings</label>
+                <field id="enable" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable the Admin Tools module</comment>
+                </field>
+                <field id="php_path" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>PHP Path</label>
+                    <comment>Path to PHP binary (e.g., /usr/bin/php). Leave empty to use default.</comment>
+                </field>
+            </group>
+            <group id="security" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Security Settings</label>
+                <field id="confirm_execution" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Confirm Command Execution</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Show confirmation dialog before executing commands</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

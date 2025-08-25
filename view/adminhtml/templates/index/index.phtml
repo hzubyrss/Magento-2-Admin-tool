@@ -1,0 +1,191 @@
+<?php
+/** @var \Storeteam\AdminTools\Block\Adminhtml\Index $block */
+?>
+
+<div class="admintools-container">
+    <div class="admintools-header">
+        <h2><?= $block->escapeHtml(__('Index Management')) ?></h2>
+        <p><?= $block->escapeHtml(__('Manage and reindex your Magento indexes directly from the admin panel.')) ?></p>
+    </div>
+
+    <?php if (!$block->isModuleEnabled()): ?>
+        <div class="message message-warning">
+            <?= $block->escapeHtml(__('Admin Tools module is currently disabled. Please enable it in System Configuration.')) ?>
+        </div>
+    <?php else: ?>
+        <div class="admintools-actions">
+            <button id="reindex-all" class="action-primary">
+                <span><?= $block->escapeHtml(__('Reindex All')) ?></span>
+            </button>
+        </div>
+
+        <div class="admintools-content">
+            <table class="data-grid">
+                <thead>
+                    <tr>
+                        <th class="data-grid-th"><?= $block->escapeHtml(__('Indexer')) ?></th>
+                        <th class="data-grid-th"><?= $block->escapeHtml(__('Description')) ?></th>
+                        <th class="data-grid-th"><?= $block->escapeHtml(__('Action')) ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($block->getIndexers() as $indexerId => $indexer): ?>
+                        <tr>
+                            <td><?= $block->escapeHtml($indexer['title']) ?></td>
+                            <td><?= $block->escapeHtml($indexer['description']) ?></td>
+                            <td>
+                                <button class="action-secondary reindex-single" data-indexer-id="<?= $block->escapeHtmlAttr($indexerId) ?>">
+                                    <span><?= $block->escapeHtml(__('Reindex')) ?></span>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="reindex-result" class="admintools-result" style="display: none;">
+            <h3><?= $block->escapeHtml(__('Reindex Result')) ?></h3>
+            <div class="message"></div>
+            <pre class="output"></pre>
+        </div>
+
+        <script>
+            require([
+                'jquery',
+                'Magento_Ui/js/modal/confirm'
+            ], function($, confirm) {
+                'use strict';
+
+                var shouldConfirm = <?= $block->shouldConfirmExecution() ? 'true' : 'false' ?>;
+
+                function reindexAll() {
+                    $.ajax({
+                        url: '<?= $block->getUrl('admintools/index/reindex') ?>',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            indexer_id: 'all',
+                            form_key: '<?= $block->getFormKey() ?>'
+                        },
+                        beforeSend: function() {
+                            $('body').trigger('processStart');
+                        },
+                        success: function(response) {
+                            $('body').trigger('processStop');
+                            showResult(response);
+                        },
+                        error: function() {
+                            $('body').trigger('processStop');
+                            showResult({
+                                success: false,
+                                message: '<?= $block->escapeJs(__('An error occurred while reindexing.')) ?>'
+                            });
+                        }
+                    });
+                }
+
+                function reindexSingle(indexerId) {
+                    $.ajax({
+                        url: '<?= $block->getUrl('admintools/index/reindex') ?>',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            indexer_id: indexerId,
+                            form_key: '<?= $block->getFormKey() ?>'
+                        },
+                        beforeSend: function() {
+                            $('body').trigger('processStart');
+                        },
+                        success: function(response) {
+                            $('body').trigger('processStop');
+                            showResult(response);
+                        },
+                        error: function() {
+                            $('body').trigger('processStop');
+                            showResult({
+                                success: false,
+                                message: '<?= $block->escapeJs(__('An error occurred while reindexing.')) ?>'
+                            });
+                        }
+                    });
+                }
+
+                function showResult(response) {
+                    var $result = $('#reindex-result');
+                    var $message = $result.find('.message');
+                    var $output = $result.find('.output');
+
+                    $message.removeClass('message-success message-error');
+                    $message.addClass(response.success ? 'message-success' : 'message-error');
+                    $message.text(response.message);
+
+                    if (response.output) {
+                        $output.text(response.output);
+                        $output.show();
+                    } else {
+                        $output.hide();
+                    }
+
+                    $result.show();
+                }
+
+                $('#reindex-all').on('click', function() {
+                    if (shouldConfirm) {
+                        confirm({
+                            title: '<?= $block->escapeJs(__('Reindex All')) ?>',
+                            content: '<?= $block->escapeJs(__('Are you sure you want to reindex all indexes? This may take some time.')) ?>',
+                            actions: {
+                                confirm: reindexAll
+                            }
+                        });
+                    } else {
+                        reindexAll();
+                    }
+                });
+
+                $('.reindex-single').on('click', function() {
+                    var indexerId = $(this).data('indexer-id');
+                    if (shouldConfirm) {
+                        confirm({
+                            title: '<?= $block->escapeJs(__('Reindex')) ?>',
+                            content: '<?= $block->escapeJs(__('Are you sure you want to reindex this index?')) ?>',
+                            actions: {
+                                confirm: function() {
+                                    reindexSingle(indexerId);
+                                }
+                            }
+                        });
+                    } else {
+                        reindexSingle(indexerId);
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
+</div>
+
+<style>
+    .admintools-container {
+        padding: 20px;
+    }
+    .admintools-header {
+        margin-bottom: 20px;
+    }
+    .admintools-actions {
+        margin-bottom: 20px;
+    }
+    .admintools-result {
+        margin-top: 30px;
+        padding: 15px;
+        background: #f8f8f8;
+        border: 1px solid #e3e3e3;
+    }
+    .admintools-result pre.output {
+        max-height: 300px;
+        overflow: auto;
+        background: #f1f1f1;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+</style>
