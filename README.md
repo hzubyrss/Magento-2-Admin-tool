@@ -1,2 +1,5 @@
 # Magento-2-Admin-tool
 Magento 2 Admin Command Manager lets you run common CLI tasks like reindexing directly from the admin panel. Simplify store management by executing commands without SSH access, making it easier and safer for administrators to maintain their store.
+
+
+Magento 2 Admin Command Manager  This Magento 2 extension allows store administrators to execute common CLI/SSH commands directly from the Admin Panel, eliminating the need for terminal access.  Key Features  Run important Magento commands from the admin area  Reindex data directly from the backend  Simplify store management without requiring SSH access  Save time for store owners and non-technical users  Use Cases  Quickly reindex when product, category, or attribute data changes  Manage routine maintenance tasks without server/SSH access  Empower administrators to handle technical actions safely from the dashboard  This extension is ideal for Magento store owners and admins who want an easy, secure, and user-friendly way to manage backend commands without relying on developers or SSH access.
